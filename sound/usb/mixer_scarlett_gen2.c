@@ -914,7 +914,7 @@ static const struct scarlett2_device_info *scarlett2_devices[] = {
 	&s18i20_gen3_info,
 
 	/* Supported Clarett+ devices */
-	&clarett_plus_8pre_info
+	&clarett_plus_8pre_info,
 
 	/* End of list */
 	NULL
