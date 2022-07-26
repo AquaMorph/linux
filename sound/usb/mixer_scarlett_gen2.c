@@ -203,7 +203,8 @@ enum {
 	SCARLETT2_CONFIG_SET_NO_MIXER = 0,
 	SCARLETT2_CONFIG_SET_GEN_2 = 1,
 	SCARLETT2_CONFIG_SET_GEN_3 = 2,
-	SCARLETT2_CONFIG_SET_COUNT = 3
+	SCARLETT2_CONFIG_SET_CLARETT_PLUS = 3,
+	SCARLETT2_CONFIG_SET_COUNT = 4
 };
 
 /* Hardware port types:
@@ -841,6 +842,38 @@ static const struct scarlett2_device_info s18i20_gen3_info = {
 	} },
 };
 
+static const struct scarlett2_device_info clarett_plus_8pre_info = {
+	.usb_id = USB_ID(0x1235, 0x820c),
+
+	.config_set = SCARLETT2_CONFIG_SET_CLARETT_PLUS,
+	.line_out_hw_vol = 1,
+	.air_input_count = 8,
+	.phantom_count = 2,
+	.inputs_per_phantom = 4,
+
+	.line_out_descrs = {
+		"Monitor 1 L",
+		"Monitor 1 R",
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		"Headphones 1 L",
+		"Headphones 1 R",
+		"Headphones 2 L",
+		"Headphones 2 R",
+	},
+
+	.port_count = {
+		[SCARLETT2_PORT_TYPE_NONE]     = {  1,  0 },
+		[SCARLETT2_PORT_TYPE_ANALOGUE] = {  ?, 10 },
+		[SCARLETT2_PORT_TYPE_SPDIF]    = {  2,  2 },
+		[SCARLETT2_PORT_TYPE_ADAT]     = {  8,  8 },
+		[SCARLETT2_PORT_TYPE_MIX]      = { ?, ? },
+		[SCARLETT2_PORT_TYPE_PCM]      = { 20, ? },
+	},
+};
+
 static const struct scarlett2_device_info *scarlett2_devices[] = {
 	/* Supported Gen 2 devices */
 	&s6i6_gen2_info,
@@ -854,6 +887,9 @@ static const struct scarlett2_device_info *scarlett2_devices[] = {
 	&s8i6_gen3_info,
 	&s18i8_gen3_info,
 	&s18i20_gen3_info,
+
+	/* Supported Clarett+ devices */
+	&clarett_plus_8pre_info
 
 	/* End of list */
 	NULL
