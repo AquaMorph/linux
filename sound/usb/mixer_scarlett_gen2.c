@@ -866,11 +866,11 @@ static const struct scarlett2_device_info clarett_plus_8pre_info = {
 
 	.port_count = {
 		[SCARLETT2_PORT_TYPE_NONE]     = {  1,  0 },
-		[SCARLETT2_PORT_TYPE_ANALOGUE] = {  ?, 10 },
+		[SCARLETT2_PORT_TYPE_ANALOGUE] = {  8, 10 },
 		[SCARLETT2_PORT_TYPE_SPDIF]    = {  2,  2 },
 		[SCARLETT2_PORT_TYPE_ADAT]     = {  8,  8 },
-		[SCARLETT2_PORT_TYPE_MIX]      = { ?, ? },
-		[SCARLETT2_PORT_TYPE_PCM]      = { 20, ? },
+		[SCARLETT2_PORT_TYPE_MIX]      = { 10, 18 },
+		[SCARLETT2_PORT_TYPE_PCM]      = { 20, 18 },
 	},
 };
 
