@@ -848,8 +848,6 @@ static const struct scarlett2_device_info clarett_plus_8pre_info = {
 	.config_set = SCARLETT2_CONFIG_SET_CLARETT_PLUS,
 	.line_out_hw_vol = 1,
 	.air_input_count = 8,
-	.phantom_count = 2,
-	.inputs_per_phantom = 4,
 
 	.line_out_descrs = {
 		"Monitor 1 L",
