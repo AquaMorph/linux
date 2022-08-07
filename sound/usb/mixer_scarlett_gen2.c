@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- *   Focusrite Scarlett Gen 2/3 Driver for ALSA
+ *   Focusrite Scarlett Gen 2/3 and Clarett+ USB Driver for ALSA
  *
  *   Supported models:
  *   - 6i6/18i8/18i20 Gen 2
  *   - Solo/2i2/4i4/8i6/18i8/18i20 Gen 3
+ *   - Clarett+ 8Pre
  *
  *   Copyright (c) 2018-2022 by Geoffrey D. Bennett <g at b4.vu>
  *   Copyright (c) 2020-2021 by Vladimir Sadovnikov <sadko4u@gmail.com>
+ *   Copyright (c) 2022 by Christian Colglazier <christian@cacolglazier.com>
  *
  *   Based on the Scarlett (Gen 1) Driver for ALSA:
  *
@@ -50,6 +52,9 @@
  *
  * Support for phantom power, direct monitoring, speaker switching,
  * and talkback added in May-June 2021.
+ *
+ * Support for Clarett+ 8Pre USB added in Aug 2022 by Christian
+ * Colglazier.
  *
  * This ALSA mixer gives access to (model-dependent):
  *  - input, output, mixer-matrix muxes
@@ -203,7 +208,7 @@ enum {
 	SCARLETT2_CONFIG_SET_NO_MIXER = 0,
 	SCARLETT2_CONFIG_SET_GEN_2 = 1,
 	SCARLETT2_CONFIG_SET_GEN_3 = 2,
-	SCARLETT2_CONFIG_SET_CLARETT_PLUS = 3,
+	SCARLETT2_CONFIG_SET_CLARETT = 3,
 	SCARLETT2_CONFIG_SET_COUNT = 4
 };
 
@@ -842,17 +847,17 @@ static const struct scarlett2_device_info s18i20_gen3_info = {
 	} },
 };
 
-static const struct scarlett2_device_info clarett_plus_8pre_info = {
+static const struct scarlett2_device_info clarett_8pre_info = {
 	.usb_id = USB_ID(0x1235, 0x820c),
 
-	.config_set = SCARLETT2_CONFIG_SET_CLARETT_PLUS,
+	.config_set = SCARLETT2_CONFIG_SET_CLARETT,
 	.line_out_hw_vol = 1,
 	.level_input_count = 2,
 	.air_input_count = 8,
 
 	.line_out_descrs = {
-		"Monitor 1 L",
-		"Monitor 1 R",
+		"Monitor L",
+		"Monitor R",
 		NULL,
 		NULL,
 		NULL,
@@ -889,11 +894,10 @@ static const struct scarlett2_device_info clarett_plus_8pre_info = {
 		{ SCARLETT2_PORT_TYPE_NONE,     0,  8 },
 		{ 0,                            0,  0 },
 	}, {
-		{ SCARLETT2_PORT_TYPE_PCM,      0, 10 },
+		{ SCARLETT2_PORT_TYPE_PCM,      0, 12 },
 		{ SCARLETT2_PORT_TYPE_ANALOGUE, 0, 10 },
 		{ SCARLETT2_PORT_TYPE_SPDIF,    0,  2 },
-		{ SCARLETT2_PORT_TYPE_MIX,      0, 18 },
-		{ SCARLETT2_PORT_TYPE_NONE,     0,  6 },
+		{ SCARLETT2_PORT_TYPE_NONE,     0, 22 },
 		{ 0,                            0,  0 },
 	} },
 };
@@ -913,7 +917,7 @@ static const struct scarlett2_device_info *scarlett2_devices[] = {
 	&s18i20_gen3_info,
 
 	/* Supported Clarett+ devices */
-	&clarett_plus_8pre_info,
+	&clarett_8pre_info,
 
 	/* End of list */
 	NULL
@@ -1107,7 +1111,8 @@ static const struct scarlett2_config
 
 	[SCARLETT2_CONFIG_TALKBACK_MAP] = {
 		.offset = 0xb0, .size = 16, .activate = 10 },
-/* Clarrett+ 8Pre */
+
+/* Clarett+ 8Pre */
 }, {
 	[SCARLETT2_CONFIG_DIM_MUTE] = {
 		.offset = 0x31, .size = 8, .activate = 2 },
@@ -1129,7 +1134,6 @@ static const struct scarlett2_config
 
 	[SCARLETT2_CONFIG_STANDALONE_SWITCH] = {
 		.offset = 0x8d, .size = 8, .activate = 6 },
-
 } };
 
 /* proprietary request/response format */
