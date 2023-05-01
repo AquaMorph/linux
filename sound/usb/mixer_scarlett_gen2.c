@@ -9,7 +9,7 @@
  *
  *   Copyright (c) 2018-2022 by Geoffrey D. Bennett <g at b4.vu>
  *   Copyright (c) 2020-2021 by Vladimir Sadovnikov <sadko4u@gmail.com>
- *   Copyright (c) 2022 by Christian Colglazier <christian@cacolglazier.com>
+ *   Copyright (c) 2022-2023 by Christian Colglazier <christian@cacolglazier.com>
  *
  *   Based on the Scarlett (Gen 1) Driver for ALSA:
  *
@@ -54,6 +54,9 @@
  * and talkback added in May-June 2021.
  *
  * Support for Clarett+ 8Pre added in Aug 2022 by Christian
+ * Colglazier.
+ *
+ * Support for Clarett+ 4Pre added in May 2023 by Christian
  * Colglazier.
  *
  * This ALSA mixer gives access to (model-dependent):
@@ -847,6 +850,58 @@ static const struct scarlett2_device_info s18i20_gen3_info = {
 	} },
 };
 
+static const struct scarlett2_device_info clarett_4pre_info = {
+	.usb_id = USB_ID(0x1235, 0x820b),
+
+	.config_set = SCARLETT2_CONFIG_SET_CLARETT,
+	.line_out_hw_vol = 1,
+	.level_input_count = 2,
+	.air_input_count = 4,
+
+	.line_out_descrs = {
+		"Monitor L",
+		"Monitor R",
+		NULL,
+		NULL,
+		"Headphones 1 L",
+		"Headphones 1 R",
+		"Headphones 2 L",
+		"Headphones 2 R",
+	},
+
+	.port_count = {
+		[SCARLETT2_PORT_TYPE_NONE]     = {  1,  0 },
+		[SCARLETT2_PORT_TYPE_ANALOGUE] = {  8,  6 },
+		[SCARLETT2_PORT_TYPE_SPDIF]    = {  2,  2 },
+		[SCARLETT2_PORT_TYPE_ADAT]     = {  8,  0 },
+		[SCARLETT2_PORT_TYPE_MIX]      = { 10, 18 },
+		[SCARLETT2_PORT_TYPE_PCM]      = {  8, 18 },
+	},
+
+	.mux_assignment = { {
+		{ SCARLETT2_PORT_TYPE_PCM,      0, 18 },
+		{ SCARLETT2_PORT_TYPE_ANALOGUE, 0,  6 },
+		{ SCARLETT2_PORT_TYPE_SPDIF,    0,  2 },
+		{ SCARLETT2_PORT_TYPE_MIX,      0, 18 },
+		{ SCARLETT2_PORT_TYPE_NONE,     0,  8 },
+		{ 0,                            0,  0 },
+	}, {
+		{ SCARLETT2_PORT_TYPE_PCM,      0, 14 },
+		{ SCARLETT2_PORT_TYPE_ANALOGUE, 0,  6 },
+		{ SCARLETT2_PORT_TYPE_SPDIF,    0,  2 },
+		{ SCARLETT2_PORT_TYPE_MIX,      0, 18 },
+		{ SCARLETT2_PORT_TYPE_NONE,     0,  8 },
+		{ 0,                            0,  0 },
+	}, {
+		{ SCARLETT2_PORT_TYPE_PCM,      0, 10 },
+		{ SCARLETT2_PORT_TYPE_ANALOGUE, 0,  6 },
+		{ SCARLETT2_PORT_TYPE_SPDIF,    0,  2 },
+		{ SCARLETT2_PORT_TYPE_MIX,      0, 18 },
+		{ SCARLETT2_PORT_TYPE_NONE,     0,  4 },
+		{ 0,                            0,  0 },
+	} },
+};
+
 static const struct scarlett2_device_info clarett_8pre_info = {
 	.usb_id = USB_ID(0x1235, 0x820c),
 
@@ -917,6 +972,7 @@ static const struct scarlett2_device_info *scarlett2_devices[] = {
 	&s18i20_gen3_info,
 
 	/* Supported Clarett+ devices */
+	&clarett_4pre_info,
 	&clarett_8pre_info,
 
 	/* End of list */
@@ -1112,7 +1168,7 @@ static const struct scarlett2_config
 	[SCARLETT2_CONFIG_TALKBACK_MAP] = {
 		.offset = 0xb0, .size = 16, .activate = 10 },
 
-/* Clarett+ 8Pre */
+/* Clarett+ devices: 8Pre, 8Pre */
 }, {
 	[SCARLETT2_CONFIG_DIM_MUTE] = {
 		.offset = 0x31, .size = 8, .activate = 2 },
