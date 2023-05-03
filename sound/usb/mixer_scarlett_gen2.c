@@ -57,7 +57,7 @@
  * Colglazier.
  *
  * Support for Clarett+ 4Pre added in May 2023 by Christian
- * Colglazier.
+ * Colglazier (thanks to Xavier Baez for protocal traces and testing).
  *
  * This ALSA mixer gives access to (model-dependent):
  *  - input, output, mixer-matrix muxes
@@ -1168,7 +1168,7 @@ static const struct scarlett2_config
 	[SCARLETT2_CONFIG_TALKBACK_MAP] = {
 		.offset = 0xb0, .size = 16, .activate = 10 },
 
-/* Clarett+ devices: 8Pre, 8Pre */
+/* Clarett+ devices: 4Pre, 8Pre */
 }, {
 	[SCARLETT2_CONFIG_DIM_MUTE] = {
 		.offset = 0x31, .size = 8, .activate = 2 },
